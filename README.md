@@ -1,6 +1,6 @@
 Ongoing files for SoilCam
 
-At this time these are actively in use for a specific setup. 
+At this time these are actively in use for a specific setup. They are not intended to be portable. (Yet)
 
 Long term goal = converting these files into a package that can be installed onto a Raspberry Pi running raspbian for the purpose of automating scans of soil
 
