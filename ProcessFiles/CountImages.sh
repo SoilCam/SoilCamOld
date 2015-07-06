@@ -31,5 +31,5 @@ do
 done
 echo -e "date\t\tsoil\t\tshrew\t\tratpaw\t\tsquirrel\tvoel\t\ttotal images"
 }
-weeklyreport | tee ~/logs/CountImages.txt
-mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/logs/CountImages.txt
+weeklyreport | tee ~/SoilCam/Logs/CountImages.txt
+mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/SoilCam/Logs/CountImages.txt

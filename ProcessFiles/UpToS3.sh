@@ -1,6 +1,6 @@
 #!/bin/bash
 # Check and upload tar files
-logs=~/logs/DailyUploadProcess.txt
+logs=~/SoilCam/Logs/DailyUploadProcess.txt
 loc=/mnt/data
 dirs=(soil shrew ratpaw squirrel voel)
 prefix=(so sp rp ss sv)

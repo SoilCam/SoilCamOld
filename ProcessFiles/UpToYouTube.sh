@@ -12,7 +12,7 @@
 #	  --location=latitude=VAL,longitude=VAL[,altitude=VAL]	Video location"
 #	  --title-template=STRING				Template for multiple videos (default: {title}	[{n}/{total}])
 #	sudo youtube-upload --title="SoilCam April 14th Test Upload" 20150412-155242-20150412-235801.mp4
-logs=~/logs/YTcheck.txt
+logs=~/SoilCam/Logs/YTcheck.txt
 vidLoc=/mnt/data/videos/$1/CompiledVideos
 #linfo="$date\t$1\t$2"
 echo -e "$(date)\t$1\t$2" >> $logs

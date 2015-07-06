@@ -31,5 +31,5 @@ weeklyreport ()
 	done
 	echo -e "date\t\tsoil\t\tshrew\t\tratpaw\t\tsquirrel\tvoel\t\tonlyvoel\ttotal videos"
 }
-weeklyreport | tee ~/logs/CountVideos.txt
-mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/logs/CountVideos.txt
+weeklyreport | tee ~/SoilCam/Logs/CountVideos.txt
+mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/SoilCam/Logs/CountVideos.txt
