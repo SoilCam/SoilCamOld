@@ -25,7 +25,7 @@
 	        exit 1
 	fi
 
-source ~/ongoing/ProcessFiles/PI_$3.cfg
+source ~/scripts/ProcessFiles/PI_$3.cfg
 
 ToEnd="$(( ($(date +%s) - $(date --date="$EndDate" +%s) )/(60*60*24) ))"
 ToStart="$(( ($(date +%s) - $(date --date="$StartDate" +%s) )/(60*60*24) ))"
