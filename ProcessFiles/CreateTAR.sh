@@ -1,5 +1,5 @@
 #!/bin/bash
-loc=/mnt/data
+loc=~/SoilCam
 dirs=(soil shrew ratpaw squirrel voel)
 prefix=(so sp rp ss sv)
 COUNTDAY=2

@@ -1,6 +1,6 @@
 #!/bin/bash
 #Check image count of current scan directories
-loc=/mnt/data/images
+loc=~/SoilCam/images
 dirs=(soil shrew ratpaw squirrel voel)
 COUNTDAY=2
 total=0

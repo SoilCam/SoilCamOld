@@ -1,15 +1,15 @@
 #!/bin/bash
 #This script builds a weekly compilation of previously compiled daily videos, it will look for the following arguments:
-#	$1 is required to specify the working directory of videos. The script will look in /mnt/data/videos/
+#	$1 is required to specify the working directory of videos. The script will look in ~/SoilCam/videos/
 #	$2 is required the first time you process a set of videos and takes the form of YYYYmmdd, for example: 20150620
 logs=~/SoilCam/Logs/BWCheck.txt
-vidLoc="/mnt/data/videos/$1"
-LastEndDate="/mnt/data/videos/$1/LastEndDate.txt"
+vidLoc="~/SoilCam/videos/$1"
+LastEndDate="~/SoilCam/videos/$1/LastEndDate.txt"
 NP=1
 
 if [ -z $1 ]; then
 	echo -e "No Starting Argument!"
-	echo -e "\tYou must specify the name of the directory daily videos are stored in. We currently look under '/mnt/data/videos/'"
+	echo -e "\tYou must specify the name of the directory daily videos are stored in. We currently look under '~/SoilCam/videos/'"
 	exit 1;
 fi
 while [ $NP -ne 13 ];

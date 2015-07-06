@@ -1,7 +1,7 @@
 #!/bin/bash
 # Check and upload tar files
 logs=~/SoilCam/Logs/DailyUploadProcess.txt
-loc=/mnt/data
+loc=~/SoilCam
 dirs=(soil shrew ratpaw squirrel voel)
 prefix=(so sp rp ss sv)
 COUNTDAY=3

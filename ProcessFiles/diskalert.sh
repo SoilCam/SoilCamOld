@@ -1,6 +1,6 @@
 #!/bin/bash
 
-parts=(/ /dev/sda2)
+parts=(/ /dev/root)
 THRESHOLD=90
 
 for i in ${parts[@]};
