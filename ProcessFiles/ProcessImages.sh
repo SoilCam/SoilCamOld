@@ -44,12 +44,12 @@ while [ $ToStart -ge $ToEnd ]; do
 	for file in $period*.jpg; do
 		counter=$(printf %04d $x);
 
-		#Set aside date and time info for image caption
+		#Set aside date and time of each image for image caption
 		ndate="${file:3:4}\/${file:7:2}\/${file:9:2}"
 		ntime="${file:12:2}:${file:14:2}:${file:16:2}"
 
 
-		#Save first and last image in log file. Set bdate and edate for later use in video file name.
+		#Save first and last image names in log file. Set bdate and edate for later use in video file name.
 		if [ "$x" -eq 1 ]
 		then
 			echo -e "$(date)\t$prefix\tstatus\t First Image File:\t$file" >> $logs
