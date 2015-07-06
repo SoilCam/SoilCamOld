@@ -1,7 +1,6 @@
 #!/bin/bash
+source ~/SoilCam/ProcessFiles/locations.cfg
 loc=~/SoilCam
-dirs=(soil shrew ratpaw squirrel voel)
-prefix=(so sp rp ss sv)
 COUNTDAY=2
 0DoImagesExist()
 {

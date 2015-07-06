@@ -2,9 +2,10 @@
 #This script builds a weekly compilation of previously compiled daily videos, it will look for the following arguments:
 #	$1 is required to specify the working directory of videos. The script will look in ~/SoilCam/videos/
 #	$2 is required the first time you process a set of videos and takes the form of YYYYmmdd, for example: 20150620
+source ~/SoilCam/ProcessFiles/locations.cfg
 logs=~/SoilCam/Logs/BWCheck.txt
-vidLoc="~/SoilCam/videos/$1"
-LastEndDate="~/SoilCam/videos/$1/LastEndDate.txt"
+vidLoc="$baseVid/$1"
+LastEndDate="$vidLoc/LastEndDate.txt"
 NP=1
 
 if [ -z $1 ]; then

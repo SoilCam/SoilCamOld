@@ -1,13 +1,13 @@
 #!/bin/bash
 #Check image count of current scan directories
-loc=~/SoilCam/images
-dirs=(soil shrew ratpaw squirrel voel)
+source ~/SoilCam/ProcessFiles/locations.cfg
+loc=$baseImg
 COUNTDAY=2
 total=0
 today=$(date -d "today" +"%Y%m%d")
 weeklyreport ()
 {
-echo -e "date\t\tsoil\t\tshrew\t\tratpaw\t\tsquirrel\tvoel\t\ttotal images"
+echo -e "date\t\tsoil\t\ttotal images"
 while [ $COUNTDAY -ge 0 ];
 do
 	prev=$(date -d "$COUNTDAY Days Ago" +"%Y%m%d")
@@ -29,7 +29,8 @@ do
 	echo "$total"
 	let COUNTDAY=COUNTDAY-1
 done
-echo -e "date\t\tsoil\t\tshrew\t\tratpaw\t\tsquirrel\tvoel\t\ttotal images"
+echo -e "date\t\tsoil\t\ttotal images"
 }
-weeklyreport | tee ~/SoilCam/Logs/CountImages.txt
-mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/SoilCam/Logs/CountImages.txt
+weeklyreport
+# | tee ~/SoilCam/Logs/CountImages.txt
+#mail -s 'SOILCAM: Report' joshdont@gmail.com < ~/SoilCam/Logs/CountImages.txt
