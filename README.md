@@ -3,9 +3,10 @@ These are a series of short scripts intended to make it easier for one to create
 It requires a number of programs that do the real work:
  - Apache (optional)
  - AVConv
- - Bash
+ - Bash (date, envsubst, read, this should all be included with if you're running Raspbian)
  - ImageMagick
  - SANE
+ - YouTube-Upload (optional)
 
 It requires hardware:
  - USB Powered Scanner that is fully compatible with SANE ( http://www.sane-project.org/sane-mfgs.html )
