@@ -3,7 +3,7 @@
 source ~/SoilCam/processFiles/locations.cfg
 source ~/SoilCam/processFiles/PI_$1.cfg
 
-file=$prefix_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
+file=${prefix}$(date -d "today" +"%Y%m%dT%H%M%S").jpg
 
 if [[ "$MultipleScanners" =  "Yes" ]]
 then
