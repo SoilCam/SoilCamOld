@@ -33,7 +33,26 @@ getScanner()
 	devpath=$(printf %03d $result1)
 
 	backend=$(sudo scanimage -f %d | cut -d : -f 1)
-	echo "$backend, $devpath"
-	echo "This command should operate your scanner:"
-	echo "sudo /usr/bin/scanimage -d $backend:libusb:001:$devpath --mode Color --format tiff givemeaname.tiff"
+}
+
+getScannerSimple()
+{
+	echo "Please read!
+	1.) All scanners must be unplugged before we continue.
+
+	2.) Make note of what scanner you are using
+
+	3.) Make note of what USB Port you are connecting said scanner into, and use a DIFFERENT USB Port for each scanner you use.
+
+	4.) Only plug in ONE scanner at a time."
+
+	echo ""
+
+	read -p "Now if you have not already done so, unplug your scanner(s) and hit the enter key to continue"
+	sleep 1
+	read -p "plug in your device and hit the enter key to continue"
+	echo "Waiting a couple seconds..."
+	sleep 1
+
+	backend=$(sudo scanimage -f %d | cut -d : -f 1)
 }
