@@ -30,7 +30,7 @@ getScanner()
 	result1=$(diff --unchanged-line-format= --old-line-format= --new-line-format='%L' <(echo "$c1") <(echo "$c2"))
 	result2=$(diff --unchanged-line-format= --old-line-format= --new-line-format='%L' <(echo "$d1") <(echo "$d2"))
 
-	devpath=$(printf %03d $result1)
+	devpath=$result2
 
 	backend=$(sudo scanimage -f %d | cut -d : -f 1)
 }
