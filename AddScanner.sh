@@ -3,16 +3,15 @@
 #additional modification will likely be needed ; )
 source ~/SoilCam/processFiles/locations.cfg
 source ~/SoilCam/USBCheck.sh
-defexit="The term '$2' you used must be at least two characters in length and may only contain letters, numbers, hyphens and underscores. No other funny business allowed"
+defexit="The term '$name' you used must be at least two characters in length and may only contain letters, numbers, hyphens and underscores. No other funny business allowed"
 
 if [ $# -lt 2 ]
 then
         echo -e "Usage:
         -a 	add a scanner, followed by a name (must be 2 or more characters in length and consist only of letters, numbers, underscores and/or hyphens)
         -d 	delete a scanner, followed by its name
-        -m      If you are attaching multiple scanners
+        -m      If you are attaching multiple scanners of the exact same make and model
         -r      Specify a resolution for your scanner. Use only if you are familiar with both your scanners resolution limits AND SANE (scanimage)'s support
-
         example: ./AddScanner.sh -a -n soil -r 600
                 This will add a config file and build the directory structure under the name "soil". We will scan at 600DPI
 
@@ -64,11 +63,11 @@ do
 		;;
 
 		2) 	CP=$NP
-			read -p "You want to create the image and video directory $2, as well as config files to process images into video? (Yy/Nn)" -n 1 -r
+			read -p "You want to create the image and video directory $name, as well as config files to process images into video? (Yy/Nn)" -n 1 -r
 			echo ""
 			if [[ $REPLY =~ ^[Yy]$ ]]
 			then
-				read -p "If there is already a directory named '$2', it and all its contents will be overwritten. Are you okay with this? (Yy/Nn)" -n 1 -r
+				read -p "If there is already a directory named '$name', it and all its contents will be overwritten. Are you okay with this? (Yy/Nn)" -n 1 -r
 				echo ""
 				if [[ $REPLY =~ ^[Yy]$ ]]
 				then
@@ -83,11 +82,11 @@ do
 			fi
 		;;
 		3) 	CP=$NP
-			read -p "Are you sure you wish to DELETE $2 associated files? (Yy/Nn) " -n 1 -r
+			read -p "Are you sure you wish to DELETE $name associated files? (Yy/Nn) " -n 1 -r
 			if [[ $REPLY =~ ^[Yy]$ ]]
 			then
 				echo ""
-				read -p "We are about to delete the config file, scripts, images and any videos associated with $2, are you sure? (Yy/Nn)" -n 1 -r
+				read -p "We are about to delete the config file, scripts, images and any videos associated with $name, are you sure? (Yy/Nn)" -n 1 -r
 				if [[ $REPLY =~ ^[Yy]$ ]]
 				then
 					echo ""
@@ -137,7 +136,8 @@ do
 				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend rep_devpath=$devpath rep_multipleScanners=$MultipleScanners envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			else
 				echo "I do NOT think there are multiple scanners"
-				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
+				getScannerSimple
+				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			fi
 
 			NP=10

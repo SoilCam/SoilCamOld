@@ -11,7 +11,7 @@ then
 	sudo /usr/bin/scanimage -d $backend:libusb:001:$devpath --mode Color --format tiff --resolution $res | sudo /usr/bin/convert - $imgloc/$file
 else
 	echo "Scanning generic"
-	sudo /usr/bin/scanimage --mode Color --format tiff --resolution $res | sudo /usr/bin/convert - $imgloc/$file
+	sudo /usr/bin/scanimage -d $backend --mode Color --format tiff --resolution $res | sudo /usr/bin/convert - $imgloc/$file
 fi
 
 
