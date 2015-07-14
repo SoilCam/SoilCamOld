@@ -122,21 +122,21 @@ do
 			fi
 			echo -e "Adding directory:\t$baseImg/$new_directory/"
 			echo -e "Adding directory:\t$baseVid/$new_directory/"
-			echo -e "Image and Video file Prefix will be:\t$new_prefix"
-			echo -e "Adding new config file:\t$baseScr/PI_$new_directory.cfg"
-			echo -e "Specifying default scan resolution of $new_resolution"
+			echo -e "Image + Video Prefixw:\t$new_prefix"
+			echo -e "Adding Config file:\t$baseScr/PI_$new_directory.cfg"
+			echo -e "Scan resolution of:\t $new_resolution"
 			echo -e "MultipleScanners: $MultipleScanners"
 			mkdir $baseVid/$new_directory
 			mkdir $baseImg/$new_directory
 
 			if [[ "$MultipleScanners" == "Yes" ]]
 			then
-				echo "I think there are multiple scanners"
+				echo "Testing for scanner"
 				getScanner
 				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend rep_devpath=$devpath rep_multipleScanners=$MultipleScanners envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			else
-				echo "I do NOT think there are multiple scanners"
-				getScannerSimple
+				echo "Testing for scanner""
+				getScanner
 				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			fi
 
