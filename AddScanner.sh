@@ -56,7 +56,7 @@ else
         done
 fi
 
-while [ $NP -ne 10 ];
+while [ $NP -ne 11 ];
 do
 	case "$NP" in
 		1)	CP=$NP
@@ -135,7 +135,7 @@ do
 				getScanner
 				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend rep_devpath=$devpath rep_multipleScanners=$MultipleScanners envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			else
-				echo "Testing for scanner""
+				echo "Testing for scanner"
 				getScanner
 				rep_directory=$new_directory rep_prefix=$new_prefix rep_resolution=$new_resolution rep_backend=$backend envsubst < $baseScr/PI_template.cfg >> $baseScr/PI_$new_directory.cfg
 			fi
@@ -144,7 +144,7 @@ do
 		;;
 		10) 	CP=$NP
 			echo "Mission Accomplished... hopefully"
-			exit 1;
+			NP=11
 		;;
 	esac
 done
