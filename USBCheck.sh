@@ -27,5 +27,5 @@ getScanner()
 
 	devpath=$(diff --unchanged-line-format= --old-line-format= --new-line-format='%L' <(echo "$d1") <(echo "$d2") | sed 's,/sys,,g' | sed 's,/devnum,,g')
 
-	backend=$(sudo scanimage -f %d | cut -d : -f 1)
+	backend=$(scanimage -f %d | cut -d : -f 1)
 }
