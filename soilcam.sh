@@ -72,7 +72,6 @@ processimages(){
 	cd $imgloc2
 	count=$tfiles
 	for file in $period*.jpg; do
-		echo "ini: $tfiles"
 		counter=$(printf %04d $count);
 		ndate="${file:3:4}\/${file:7:2}\/${file:9:2}"
 		ntime="${file:12:2}:${file:14:2}:${file:16:2}"
@@ -90,7 +89,6 @@ processimages(){
                         -composite      \
                      "temp_$counter".jpg
                 count=$(($count+1));
-		echo "inc: $count"
 		mv $file $imgloc3/
         done
 #	file counts
