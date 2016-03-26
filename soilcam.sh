@@ -110,11 +110,11 @@ processvideo(){
 			sleep 1
 			rm $imgloc4/*.jpg
 		else
-			continue
+			exit 1
 #			echo "failed to process video"
 		fi
 	else
-		continue
+		exit 1
 #		echo "failed to find images?"
 	fi
 }
@@ -127,8 +127,8 @@ processtempvideo(){
 	avconv -y -i $vidloc/t_sc_$TheDate.mp4 -f mpegts -c copy -bsf:v h264_mp4toannexb $vidloc/t_sc_$TheDate.mpeg.ts
 	sleep 1
 	else
+		exit 1
 #		echo "failed to process video"
-		continue
 	fi
 }
 
