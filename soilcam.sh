@@ -11,25 +11,26 @@ imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
 vidloc=~/public_html/videos			# videos
 
 usage(){
-	echo -e "Usage: Unintended to be run manually!
+	echo -e "Usage: Primarily through cron/some automating process:
 	-s	start a scan, convert to jpg and save image in new directory
 		-s is intended to be run every 15 minutes, starting on the hour
 
-	-p	process the last image scanned: timestamp, resize, save in processing folder
-		as temp_ numbered file, move unmodified image from new to original directory.
+	-p	process the last image scanned: timestamp, resize, save in pro
+		cessing folder as temp_ numbered file, move unmodified image
+		from new to original directory.
 		-p is already called when -s is used.
 
-	-v	build video out of images in processing folder, move images to tobedeleted
+	-v	build video out of images in processing folder, move images to
+		tobedeleted.
 		-v is intended to be run as a cron job 5 minutes after midnight
 
-	-t	build video out of images in processing folder, do not move after processed
-		-v is intended to be run manually as a test, no images are deleted or moved
-		All videos processed in this mode are prefixed with a t_
+	-t	build video out of images in processing folder, does not move
+		images after processed. Videos processed prefixed t_.
+		-v is intended to be run manually as a test
 
-	-u	upload a yesterday's processed video (mp4) to youtube
-		-u is intended to be run via cron a good time after -v has been run
-		This will only work if you have installed youtube-upload, it's dependencies
-		and created the appropriate json-secrets file.
+	-u	upload a yesterday's processed video (mp4) to youtube. Only
+		works if you have youtube-upload and dependencies installed
+		-u is intended to run via cron a good time after -v is done.
 	"
 }
 goscango(){
