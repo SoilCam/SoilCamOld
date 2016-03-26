@@ -11,9 +11,12 @@ It requires a number of programs that do the real work:
 
 It requires hardware:
  - Scanner compatible with SANE ( http://www.sane-project.org/sane-mfgs.html )
+ 
  -- Tested with a Canon Lide 110
+ 
  -- Other scanners may require minor changes to scan function
  - Powered USB Hub
+ 
  -- Tested with a 4 Port Plugable Power USB Hub
 
 Intended to run on a Raspberry 2 running Raspbian. Should run fine on a Pi1or3
