@@ -9,10 +9,29 @@ imgloc2=~/public_html/images/processing		# modified images temp. here
 imgloc3=~/public_html/images/original		# originals stored here long term
 imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
 vidloc=~/public_html/videos			# videos
+setup(){
+	dirs=("$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc")
+	for i in "${dirs[@]}"
+	do
+		if [ ! -d "$i" ]; then
+			read -p "'$i' is not a directory, shall I create it? (Yy or Nn)"
+			echo ""
+			if [[ $REPLY =~ ^[Yy]$ ]]; then
+				mkdir $i
+			else
+				echo "You have told me not to make '$i'. Exiting now."
+				exit 1
+			fi
+		else
+			continue
+		fi
+	done
+}
 
 usage(){
 	echo -e "Usage: Primarily through cron/some automating process:
-	-s	start a scan, convert to jpg and save image in new directory
+	-s	Checks directory structure needs, asks and builds if needed.
+		Start a scan, convert to jpg and save image in new directory.
 		-s is intended to be run every 15 minutes, starting on the hour
 
 	-p	process the last image scanned: timestamp, resize, save in pro
@@ -34,15 +53,16 @@ usage(){
 	"
 }
 goscango(){
+	setup
 	#start a scan at 300 DPI, save as JPG with date & time stamp
-	echo "Make Scan Go"
+#	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
 	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert - $imgloc1/$file
 	processimages
 }
 
 processimages(){
-	echo "Process image"
+#	echo "Process image"
 	TheDate=$(date -d today  +%Y%m%d)
 	period="sc_$TheDate"
 #	get number of temp files already in temp dir
@@ -75,14 +95,14 @@ processimages(){
 	pfiles=$(ls -1 $imgloc3/$period*.jpg | wc -l)
 	ofiles=$(ls -1 $imgloc1/$period*.jpg | wc -l)
 	tfiles=$(ls -1 $imgloc2/temp_*.jpg | wc -l)
-	echo "Orig: $ofiles Proc: $pfiles Temp: $tfiles"
+#	echo "Orig: $ofiles Proc: $pfiles Temp: $tfiles"
 
 }
 
 processvideo(){
 #	This is designed to be run five minutes after midnight
 #	Combine all images from processing into a video
-	echo "Process video"
+#	echo "Process video"
 	TheDate=$(date -d yesterday  +%Y%m%d)
 	if mv $imgloc2/*.jpg $imgloc4/; then
 		if avconv -y -r 30 -i $imgloc4/temp_%04d.jpg -r 30 -vcodec libx264 -crf 20 -g 15 $vidloc/sc_$TheDate.mp4; then
@@ -90,22 +110,25 @@ processvideo(){
 			sleep 1
 			rm $imgloc4/*.jpg
 		else
-			echo "failed to process video"
+			continue
+#			echo "failed to process video"
 		fi
 	else
-		echo "failed to find images?"
+		continue
+#		echo "failed to find images?"
 	fi
 }
 processtempvideo(){
 #	This is designed to process videos from today, whenever you please
 #	It does NOT however move any files around. This is primarily used for testing purposes
-	echo "Process video temporarily"
+#	echo "Process video temporarily"
 	TheDate=$(date -d today +%Y%m%d)
 	if avconv -y -r 30 -i $imgloc2/temp_%04d.jpg -r 30 -vcodec libx264 -crf 20 -g 15 $vidloc/t_sc_$TheDate.mp4; then
 	avconv -y -i $vidloc/t_sc_$TheDate.mp4 -f mpegts -c copy -bsf:v h264_mp4toannexb $vidloc/t_sc_$TheDate.mpeg.ts
 	sleep 1
 	else
-		echo "failed to process video"
+#		echo "failed to process video"
+		continue
 	fi
 }
 
