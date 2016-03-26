@@ -1,20 +1,22 @@
-This is a simple script intended to make it easier to create timelapse videos with a scanner.
+This is a simple script intended to make it easier to create timelapse videos 
+with a scanner. Ideally run as a CRON job at various points.
 
 It requires a number of programs that do the real work:
- - Apache
+ - Apache2
  - AVConv
- - Bash (date, envsubst, read, this should all be included with if you're running Raspbian)
+ - Bash
  - ImageMagick
  - SANE
  - YouTube-Upload (optional)
 
 It requires hardware:
- - USB Powered Scanner that is fully compatible with SANE ( http://www.sane-project.org/sane-mfgs.html )
- - - Tested with a Canon Lide 110
+ - Scanner compatible with SANE ( http://www.sane-project.org/sane-mfgs.html )
+ -- Tested with a Canon Lide 110
+ -- Other scanners may require minor changes to scan function
  - Powered USB Hub
- - - Tested with a 4 Port Plugable Power USB Hub
+ -- Tested with a 4 Port Plugable Power USB Hub
 
-It is intended to be run on a Raspberry Pi 2 running Raspbian. It will likely run on other hardware (Pi 1 is fine, just a lot slower) 
+Intended to run on a Raspberry 2 running Raspbian. Should run fine on a Pi1or3
  - Tested running the March 2016 release of Raspbian
  - http://www.raspberrypi.org
 
