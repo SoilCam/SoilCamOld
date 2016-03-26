@@ -4,11 +4,11 @@
 #This is intended to be run at a specific scheduled via CRON
 #See usage details below
 
-imgloc1=~/public_html/images/original
-imgloc2=~/public_html/images/processing
-imgloc3=~/public_html/images/processed
-imgloc4=~/public_html/images/tobedeleted
-vidloc=~/public_html/videos
+imgloc1=~/public_html/images/new		# new images go here temp.
+imgloc2=~/public_html/images/processing		# modified images temp. here
+imgloc3=~/public_html/images/processed		# originals stored here long term
+imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
+vidloc=~/public_html/videos			# videos
 
 usage(){
 	echo -e "Usage: Unintended to be run manually!
@@ -17,14 +17,17 @@ usage(){
 	-p	process the last image scanned (timestamp, resize, save in processing folder
 		-p is already called when -s is used.
 	-v	build video out of images in processing folder, move images to processed
-		-v is intended to be run as a cron job 5 minutes after midnight"
-
+		-v is intended to be run as a cron job 5 minutes after midnight
+	-t	build video out of images in processing folder, do not move after processed
+		-v is intended to be run manually as a test, no images are deleted or moved
+		All videos processed in this mode are prefixed with a t_
+	"
 }
 goscango(){
 	#start a scan at 300 DPI, save as JPG with date & time stamp
 	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
-	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert - ~/public_html/images/original/$file
+	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert - $imgloc1/$file
 	processimages
 }
 
@@ -34,7 +37,7 @@ processimages(){
 	period="sc_$TheDate"
 #	get number of temp files already in temp dir
 	tfiles=$(ls -1 $imgloc2/temp_*.jpg | wc -l)
-#	move files from original directory to processing directory
+#	move files from new directory to processing directory
 	mv $imgloc1/*.jpg $imgloc2/
 	cd $imgloc2
 	count=$tfiles;
@@ -67,17 +70,13 @@ processimages(){
 }
 
 processvideo(){
+#	This is designed to be run five minutes after midnight
+#	Combine all images from processing into a video
 	echo "Process video"
-#	If we run this at midnight, we need to set this for the prior day!
 	TheDate=$(date -d yesterday  +%Y%m%d)
-#	move files from temp dimage directory to new directory
-#	otherwise, if it takes > 15 minutes to process video, we end up processing images we didn't want to?
 	if mv $imgloc2/*.jpg $imgloc4/; then
-		echo "success"
-		sleep 1
 		if avconv -y -r 30 -i $imgloc4/temp_%04d.jpg -r 30 -vcodec libx264 -crf 20 -g 15 $vidloc/sc_$TheDate.mp4; then
 			avconv -y -i $vidloc/sc_$TheDate.mp4 -f mpegts -c copy -bsf:v h264_mp4toannexb $vidloc/sc_$TheDate.mpeg.ts
-			echo "more success, deleting temp images"
 			sleep 1
 			rm $imgloc4/*.jpg
 		else
@@ -85,6 +84,18 @@ processvideo(){
 		fi
 	else
 		echo "failed to find images?"
+	fi
+}
+processtempvideo(){
+#	This is designed to process videos from today, whenever you please
+#	It does NOT however move any files around. This is primarily used for testing purposes
+	echo "Process video temporarily"
+	TheDate=$(date -d today +%Y%m%d)
+	if avconv -y -r 30 -i $imgloc2/temp_%04d.jpg -r 30 -vcodec libx264 -crf 20 -g 15 $vidloc/t_sc_$TheDate.mp4; then
+	avconv -y -i $vidloc/t_sc_$TheDate.mp4 -f mpegts -c copy -bsf:v h264_mp4toannexb $vidloc/t_sc_$TheDate.mpeg.ts
+	sleep 1
+	else
+		echo "failed to process video"
 	fi
 }
 
@@ -107,6 +118,10 @@ then
 		;;
 		-V|-v)
 			processvideo
+			exit 1;
+		;;
+		-T|-t)
+			processtempvideo
 			exit 1;
 		;;
 		-H|-h|--help)
