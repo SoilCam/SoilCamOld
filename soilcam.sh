@@ -6,21 +6,30 @@
 
 imgloc1=~/public_html/images/new		# new images go here temp.
 imgloc2=~/public_html/images/processing		# modified images temp. here
-imgloc3=~/public_html/images/processed		# originals stored here long term
+imgloc3=~/public_html/images/original		# originals stored here long term
 imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
 vidloc=~/public_html/videos			# videos
 
 usage(){
 	echo -e "Usage: Unintended to be run manually!
-	-s	start a scan
+	-s	start a scan, convert to jpg and save image in new directory
 		-s is intended to be run every 15 minutes, starting on the hour
-	-p	process the last image scanned (timestamp, resize, save in processing folder
+
+	-p	process the last image scanned: timestamp, resize, save in processing folder
+		as temp_ numbered file, move unmodified image from new to original directory.
 		-p is already called when -s is used.
-	-v	build video out of images in processing folder, move images to processed
+
+	-v	build video out of images in processing folder, move images to tobedeleted
 		-v is intended to be run as a cron job 5 minutes after midnight
+
 	-t	build video out of images in processing folder, do not move after processed
 		-v is intended to be run manually as a test, no images are deleted or moved
 		All videos processed in this mode are prefixed with a t_
+
+	-u	upload a yesterday's processed video (mp4) to youtube
+		-u is intended to be run via cron a good time after -v has been run
+		This will only work if you have installed youtube-upload, it's dependencies
+		and created the appropriate json-secrets file.
 	"
 }
 goscango(){
@@ -99,6 +108,18 @@ processtempvideo(){
 	fi
 }
 
+uploadvideo(){
+#	This is intended to be called after video has been processed
+	TheDate=$(date -d yesterday +%Y%m%d)
+	youtube-upload \
+	--title="SoilCam $TheDate" \
+	--description="Daily video uploaded from a SoilCam in Ann Arbor, MI, \
+	 more details at http://soilcam.blogspot.com" \
+	--category="Science & Technology" \
+	--tags="soil, dirt, earth, worms, nematodes, decomposing" \
+	--client-secrets="my_client_secret.json" \
+	$vidloc/sc_$TheDate.mp4
+}
 # check for arguments, exit with explanation if none, or run if one given
 if [ $# -ne 1 ]
 then
@@ -122,6 +143,10 @@ then
 		;;
 		-T|-t)
 			processtempvideo
+			exit 1;
+		;;
+		-U|-u)
+			uploadvideo
 			exit 1;
 		;;
 		-H|-h|--help)
