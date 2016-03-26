@@ -57,7 +57,7 @@ goscango(){
 	#start a scan at 300 DPI, save as JPG with date & time stamp
 #	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
-	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert - $imgloc1/$file
+	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert -flip -flop - $imgloc1/$file
 	processimages
 }
 
@@ -70,9 +70,10 @@ processimages(){
 #	move files from new directory to processing directory
 	mv $imgloc1/*.jpg $imgloc2/
 	cd $imgloc2
-	count=$tfiles;
+	count=$tfiles
 	for file in $period*.jpg; do
-		counter=$(printf %04d $tfiles);
+		echo "ini: $tfiles"
+		counter=$(printf %04d $count);
 		ndate="${file:3:4}\/${file:7:2}\/${file:9:2}"
 		ntime="${file:12:2}:${file:14:2}:${file:16:2}"
                 convert $file -resize x1080 -crop 769x1080-1+0 - | convert -background '#0008'   \
@@ -88,7 +89,8 @@ processimages(){
                         -gravity south  \
                         -composite      \
                      "temp_$counter".jpg
-                count=$(($tfiles+1));
+                count=$(($count+1));
+		echo "inc: $count"
 		mv $file $imgloc3/
         done
 #	file counts
