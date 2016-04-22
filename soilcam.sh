@@ -4,13 +4,14 @@
 #This is intended to be run at a specific scheduled via CRON
 #See usage details below
 
+imgloc0=~/public_html/images
 imgloc1=~/public_html/images/new		# new images go here temp.
 imgloc2=~/public_html/images/processing		# modified images temp. here
 imgloc3=~/public_html/images/original		# originals stored here long term
 imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
 vidloc=~/public_html/videos			# videos
 setup(){
-	dirs=("$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc")
+	dirs=("$imgloc0" "$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc")
 	for i in "${dirs[@]}"
 	do
 		if [ ! -d "$i" ]; then
