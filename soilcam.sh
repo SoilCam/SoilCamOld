@@ -68,7 +68,7 @@ goscango(){
 	#start a scan at 300 DPI, save as JPG with date & time stamp
 #	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
-	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert -flip -flop - $imgloc1/$file
+	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -x 210 -y 295 | /usr/bin/convert -flip -flop - $imgloc1/$file
 	if [[ $? -eq 0 ]]; then
 		processimages
 	else
