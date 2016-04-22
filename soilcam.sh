@@ -18,12 +18,13 @@ setup(){
 			read -p "'$i' is not a directory, shall I create it? (Yy or Nn)"
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
 				mkdir $i
-				if (( $? ));  then
+				if [[ $? -eq 0 ]];  then
+					echo "Success, created $i directory"
+					echo ""
+				else
 					echo "Try creating public_html directory in home by typing 'mkdir ~/public_html'"
 #	We could do this for the user, but this is an opportunity for them to learn
 					exit 1
-				else
-					echo "Success, created $i directory"
 					echo ""
 				fi
 			else
@@ -33,6 +34,8 @@ setup(){
 		else
 			continue
 		fi
+	echo "All image directories found. You will not see this message again unless image"
+	echo "directories are missing... Initiating scan process."
 	done
 }
 
@@ -66,11 +69,11 @@ goscango(){
 #	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
 	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert -flip -flop - $imgloc1/$file
-	if (( $? )); then
+	if [[ $? -eq 0 ]]; then
+		processimages
+	else
 		echo "Could not scan. Is the scanner plugged in? Have you installed ImageMagick?"
 		exit 1
-	else
-		processimages
 	fi
 }
 
