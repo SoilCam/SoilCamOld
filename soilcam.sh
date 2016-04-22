@@ -4,7 +4,7 @@
 #This is intended to be run at a specific scheduled via CRON
 #See usage details below
 
-imgloc0=~/public_html/images
+imgloc0=~/public_html/images			# directory to store images
 imgloc1=~/public_html/images/new		# new images go here temp.
 imgloc2=~/public_html/images/processing		# modified images temp. here
 imgloc3=~/public_html/images/original		# originals stored here long term
@@ -16,11 +16,18 @@ setup(){
 	do
 		if [ ! -d "$i" ]; then
 			read -p "'$i' is not a directory, shall I create it? (Yy or Nn)"
-			echo ""
 			if [[ $REPLY =~ ^[Yy]$ ]]; then
 				mkdir $i
+				if (( $? ));  then
+					echo "Try creating public_html directory in home by typing 'mkdir ~/public_html'"
+#	We could do this for the user, but this is an opportunity for them to learn
+					exit 1
+				else
+					echo "Success, created $i directory"
+					echo ""
+				fi
 			else
-				echo "You have told me not to make '$i'. Exiting now."
+				echo "You have told me not to make '$i', but I need this! Exiting now."
 				exit 1
 			fi
 		else
@@ -59,7 +66,12 @@ goscango(){
 #	echo "Make Scan Go"
 	file=sc_$(date -d "today" +"%Y%m%dT%H%M%S").jpg
 	/usr/bin/scanimage --mode Color --format tiff --resolution 300 -y 299 | /usr/bin/convert -flip -flop - $imgloc1/$file
-	processimages
+	if (( $? )); then
+		echo "Could not scan. Is the scanner plugged in? Have you installed ImageMagick?"
+		exit 1
+	else
+		processimages
+	fi
 }
 
 processimages(){
