@@ -8,7 +8,7 @@ imgloc1=~/public_html/images/new		# new images go here temp.
 imgloc2=~/public_html/images/processing		# modified images temp. here
 imgloc3=~/public_html/images/original		# originals stored here long term
 imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
-vidloc=~/public_html/videos			# videos
+vidloc=/home/pi/public_html/videos			# videos
 setup(){
 	dirs=("$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc")
 	for i in "${dirs[@]}"
@@ -46,6 +46,9 @@ usage(){
 	-t	build video out of images in processing folder, does not move
 		images after processed. Videos processed prefixed t_.
 		-v is intended to be run manually as a test
+
+	-c	combine video files processed into a monthly video
+		-c is intended to run via cron after daily video has processed
 
 	-u	upload a yesterday's processed video (mp4) to youtube. Only
 		works if you have youtube-upload and dependencies installed
@@ -135,15 +138,35 @@ processtempvideo(){
 uploadvideo(){
 #	This is intended to be called after video has been processed
 	TheDate=$(date -d yesterday +%Y%m%d)
-	youtube-upload \
+	sudo youtube-upload \
 	--title="SoilCam $TheDate" \
 	--description="Daily video uploaded from a SoilCam in Ann Arbor, MI, \
 	 more details at http://soilcam.blogspot.com" \
 	--category="Science & Technology" \
 	--tags="soil, dirt, earth, worms, nematodes, decomposing" \
-	--client-secrets="my_client_secret.json" \
-	$vidloc/sc_$TheDate.mp4
+	--credentials="/home/pi/.youtube-upload-credentials.json" \
+	--client-secrets="/home/pi/my_client_secret.json" \
+	$vidloc/sc_$TheDate.mp4 >> sclog.txt
+
 }
+
+combinevideo(){
+#intended to be called immediately after video has been processed
+#combines prior day(s) videos into a new video stored in ~/public_html/videos/combined/
+#will fail if not called daily and a new month rolls in.
+	TheDate=$(date -d yesterday +%Y%m)
+	for file in ~/public_html/videos/*$TheDate*.ts
+	do
+		if cat $file >> $vidloc/combined/$TheDate-CompostCam.mpeg.ts; then
+			rm $file
+		else
+			echo "No file to process, or something else bad happened..."
+		fi
+	done
+
+	avconv -y -isync -i $vidloc/combined/$TheDate-CompostCam.mpeg.ts -c copy $vidloc/combined/$TheDate-CompostCam.mp4
+}
+
 # check for arguments, exit with explanation if none, or run if one given
 if [ $# -ne 1 ]
 then
@@ -167,6 +190,10 @@ then
 		;;
 		-T|-t)
 			processtempvideo
+			exit 1;
+		;;
+		-C|-c)
+			combinevideo
 			exit 1;
 		;;
 		-U|-u)
