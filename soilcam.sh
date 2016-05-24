@@ -10,8 +10,9 @@ imgloc2=~/public_html/images/processing		# modified images temp. here
 imgloc3=~/public_html/images/original		# originals stored here long term
 imgloc4=~/public_html/images/tobedeleted	# modified images here after processing
 vidloc=/home/pi/public_html/videos			# videos
+comloc=/home/pi/public_html/videos/combined
 setup(){
-	dirs=("$imgloc0" "$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc")
+	dirs=("$imgloc0" "$imgloc1" "$imgloc2" "$imgloc3" "$imgloc4" "$vidloc" "$comloc")
 	for i in "${dirs[@]}"
 	do
 		if [ ! -d "$i" ]; then
@@ -192,12 +193,14 @@ combinevideo(){
 #combines prior day(s) videos into a new video stored in ~/public_html/videos/combined/
 #will fail if not called daily and a new month rolls in.
 	TheDate=$(date -d yesterday +%Y%m)
-	for file in ~/public_html/videos/*$TheDate*.ts
+	for file in ~/public_html/videos/sc_$TheDate*.ts
 	do
 		if cat $file >> $vidloc/combined/$TheDate-CompostCam.mpeg.ts; then
 			rm $file
 		else
 			echo "No file to process, or something else bad happened..."
+			echo "Probably could not find $file, exiting now"
+			exit 0
 		fi
 	done
 
